@@ -7,7 +7,7 @@
 ## cara menggunakan?
 	.sp (untuk mengecek speed respon bot)
 	.stk
-		kirim gambar dengan quote .stk
+		kirim gambar dengan caption .stk
 		reply gambar yang sudah dikirim dengan .stk
 		
 ## installasi?
