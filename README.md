@@ -1,5 +1,7 @@
 ## whatsapp bot untuk membuat sticker dari image / video / gif
 
+## screenshots penggunaan ada di issue
+
 ## usable commands? 
 	.sp
 	.stk
