@@ -2,13 +2,13 @@
 
 ## usable commands? 
 	.sp
-	.sticker
+	.stk
 
 ## cara menggunakan?
 	.sp (untuk mengecek speed respon bot)
-	.sticker
-		kirim gambar dengan quote .sticker
-		reply gambar yang sudah dikirim dengan .sticker
+	.stk
+		kirim gambar dengan quote .stk
+		reply gambar yang sudah dikirim dengan .stk
 		
 ## installasi?
 ```
