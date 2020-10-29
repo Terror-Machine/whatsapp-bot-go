@@ -1,135 +1,60 @@
-# go-whatsapp
-Package rhymen/go-whatsapp implements the WhatsApp Web API to provide a clean interface for developers. Big thanks to all contributors of the [sigalor/whatsapp-web-reveng](https://github.com/sigalor/whatsapp-web-reveng) project. The official WhatsApp Business API was released in August 2018. You can check it out [here](https://www.whatsapp.com/business/api).
+## whatsapp bot untuk membuat sticker dari image / video / gif
 
-## Installation
-```sh
-go get github.com/Rhymen/go-whatsapp
+## usable commands? 
+	.sp
+	.sticker
+
+## cara menggunakan?
+	.sp (untuk mengecek speed respon bot)
+	.sticker
+		kirim gambar dengan quote .sticker
+		reply gambar yang sudah dikirim dengan .sticker
+		
+## installasi?
+```
+sudo apt-get install -y mc
+sudo apt-get -y update
+sudo apt-get -y upgrade
+sudo apt-get install -y curl
+sudo apt-get install -y zip
+sudo apt-get install -y unzip
+curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh
+sudo bash nodesource_setup.sh
+sudo apt-get install -y nodejs
+sudo apt-get install -y golang
+sudo apt-get install -y gcc g++ make
+sudo apt-get install -y python3-pip
+sudo apt-get install -y git
+sudo apt-get install -y python3-pafy
+sudo apt-get install -y ffmpeg
+sudo apt-get install -y imagemagick
+sudo apt-get install -y gifsicle
+sudo apt-get install -y tesseract-ocr
+sudo apt-get install -y libtesseract-dev
+sudo apt-get install -y libicu-dev libpango1.0-dev libcairo2-dev
+sudo apt-get update && sudo apt-get install -yq gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
+sudo timedatectl set-timezone Asia/Jakarta
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt-get install -y ./google-chrome-stable_current_amd64.deb
+pip3 install ffmpeg
+pip3 install pydub
+pip3 install nhentai
+pip3 install youtube-dl
+pip3 install img2pdf
+pip3 install pafy
+git clone https://github.com/Terror-Machine/whatsapp-bot-go
+cd whatsapp-bot-go/fn
+chmod u+x fn
+screen -R bot
+./fn
+scan qr yang ada diterminal dengan akun yang akan dijadikan bot
 ```
 
-## Usage
-### Creating a connection
-```go
-import (
-    whatsapp "github.com/Rhymen/go-whatsapp"
-)
-
-wac, err := whatsapp.NewConn(20 * time.Second)
+## tambahan! PENTING !!!
+buka file .bashrc yang ada didalam folder /root
+dan copy paste code dibawah ini di baris paling bawah lalu save
 ```
-The duration passed to the NewConn function is used to timeout login requests. If you have a bad internet connection use a higher timeout value. This function only creates a websocket connection, it does not handle authentication.
-
-### Login
-```go
-qrChan := make(chan string)
-go func() {
-    fmt.Printf("qr code: %v\n", <-qrChan)
-    //show qr code or save it somewhere to scan
-}()
-sess, err := wac.Login(qrChan)
+export GOROOT=/usr/lib/go
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 ```
-The authentication process requires you to scan the qr code, that is send through the channel, with the device you are using whatsapp on. The session struct that is returned can be saved and used to restore the login without scanning the qr code again. The qr code has a ttl of 20 seconds and the login function throws a timeout err if the time has passed or any other request fails.
-
-### Restore
-```go
-newSess, err := wac.RestoreWithSession(sess)
-```
-The restore function needs a valid session and returns the new session that was created.
-
-### Add message handlers
-```go
-type myHandler struct{}
-
-func (myHandler) HandleError(err error) {
-	fmt.Fprintf(os.Stderr, "%v", err)
-}
-
-func (myHandler) HandleTextMessage(message whatsapp.TextMessage) {
-	fmt.Println(message)
-}
-
-func (myHandler) HandleImageMessage(message whatsapp.ImageMessage) {
-	fmt.Println(message)
-}
-
-func (myHandler) HandleDocumentMessage(message whatsapp.DocumentMessage) {
-	fmt.Println(message)
-}
-
-func (myHandler) HandleVideoMessage(message whatsapp.VideoMessage) {
-	fmt.Println(message)
-}
-
-func (myHandler) HandleAudioMessage(message whatsapp.AudioMessage){	
-	fmt.Println(message)
-}
-
-func (myHandler) HandleJsonMessage(message string) {
-	fmt.Println(message)
-}
-
-func (myHandler) HandleContactMessage(message whatsapp.ContactMessage) {
-	fmt.Println(message)
-}
-
-func (myHandler) HandleBatteryMessage(msg whatsapp.BatteryMessage) {
-	fmt.Println(message)
-}
-
-wac.AddHandler(myHandler{})
-```
-The message handlers are all optional, you don't need to implement anything but the error handler to implement the interface. The ImageMessage, VideoMessage, AudioMessage and DocumentMessage provide a Download function to get the media data.
-
-### Sending text messages
-```go
-text := whatsapp.TextMessage{
-    Info: whatsapp.MessageInfo{
-        RemoteJid: "0123456789@s.whatsapp.net",
-    },
-    Text: "Hello Whatsapp",
-}
-
-err := wac.Send(text)
-```
-
-### Sending Contact Messages
-```go
-contactMessage := whatsapp.ContactMessage{
-			Info: whatsapp.MessageInfo{ 
-                RemoteJid: "0123456789@s.whatsapp.net", 
-                },
-			DisplayName: "Luke Skylwallker",
-			Vcard: "BEGIN:VCARD\nVERSION:3.0\nN:Skyllwalker;Luke;;\nFN:Luke Skywallker\nitem1.TEL;waid=0123456789:+1 23 456789789\nitem1.X-ABLabel:Mobile\nEND:VCARD",
-		}
-
-id, error := client.WaConn.Send(contactMessage)
-```
-
-
-The message will be send over the websocket. The attributes seen above are the required ones. All other relevant attributes (id, timestamp, fromMe, status) are set if they are missing in the struct. For the time being we only support text messages, but other types are planned for the near future.
-
-## Legal
-This code is in no way affiliated with, authorized, maintained, sponsored or endorsed by WhatsApp or any of its
-affiliates or subsidiaries. This is an independent and unofficial software. Use at your own risk.
-
-## License
-
-The MIT License (MIT)
-
-Copyright (c) 2018
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
