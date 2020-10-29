@@ -50,7 +50,7 @@ screen -R bot
 scan qr yang ada diterminal dengan akun yang akan dijadikan bot
 ```
 
-## tambahan! PENTING !!!
+## tambahan! PENTING WAJIB DIBACA!!!
 buka file .bashrc yang ada didalam folder /root
 dan copy paste code dibawah ini di baris paling bawah lalu save
 ```
