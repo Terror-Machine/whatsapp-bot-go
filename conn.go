@@ -137,7 +137,7 @@ func NewConnWithProxy(timeout time.Duration, proxy func(*http.Request) (*url.URL
 		msgTimeout: timeout,
 		Store:      newStore(),
 
-		longClientName:  "rxyz-bots",
+		longClientName:  "fnbots-whatsapp",
 		shortClientName: "go-whatsapp",
 		clientVersion:   "0.1.0",
 		Proxy:           proxy,
